@@ -27,6 +27,7 @@ import SidebarResponsive from "components/Sidebar/SidebarResponsive";
 import PropTypes from "prop-types";
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import routes from "routes.js";
 
 export default function HeaderLinks(props) {
@@ -44,6 +45,7 @@ export default function HeaderLinks(props) {
     mainText = "white";
   }
   const settingsRef = React.useRef();
+  const history = useHistory();
   return (
     <Flex
       pe={{ sm: "0px", md: "16px" }}
@@ -67,7 +69,7 @@ export default function HeaderLinks(props) {
           borderColor: { mainTeal },
         }}
       >
-        <InputLeftElement
+        {/* <InputLeftElement
           children={
             <IconButton
               bg="inherit"
@@ -84,14 +86,14 @@ export default function HeaderLinks(props) {
               icon={<SearchIcon color={searchIcon} w="15px" h="15px" />}
             ></IconButton>
           }
-        />
-        <Input
+        /> */}
+        {/* <Input
           fontSize="xs"
           py="11px"
           color={mainText}
           placeholder="Type here..."
           borderRadius="inherit"
-        />
+        /> */}
       </InputGroup>
       <NavLink to="/auth/signin">
         <Button
@@ -115,7 +117,15 @@ export default function HeaderLinks(props) {
             )
           }
         >
-          <Text display={{ sm: "none", md: "flex" }}>Sign In</Text>
+          <Text
+            display={{ sm: "none", md: "flex" }}
+            onClick={() => {
+              localStorage.clear();
+              history.push("/admin/dashboard");
+            }}
+          >
+            Logout
+          </Text>
         </Button>
       </NavLink>
       <SidebarResponsive
@@ -125,7 +135,7 @@ export default function HeaderLinks(props) {
         // logo={logo}
         {...rest}
       />
-      <SettingsIcon
+      {/* <SettingsIcon
         cursor="pointer"
         ms={{ base: "16px", xl: "0px" }}
         me="16px"
@@ -134,8 +144,8 @@ export default function HeaderLinks(props) {
         color={navbarIcon}
         w="18px"
         h="18px"
-      />
-      <Menu>
+      /> */}
+      {/* <Menu>
         <MenuButton>
           <BellIcon color={navbarIcon} w="18px" h="18px" />
         </MenuButton>
@@ -170,7 +180,7 @@ export default function HeaderLinks(props) {
             </MenuItem>
           </Flex>
         </MenuList>
-      </Menu>
+      </Menu> */}
     </Flex>
   );
 }
