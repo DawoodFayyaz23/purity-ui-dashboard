@@ -18,6 +18,7 @@ import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CustomModal from "components/Modal/Modal";
+import TransferModal from "components/Modal/TransferModal";
 import TablesTableRow from "components/Tables/TablesTableRow";
 import { collection, getDocs, getFirestore } from "firebase/firestore";
 import React from "react";
@@ -28,7 +29,9 @@ const Authors = ({ title, captions, data }) => {
   const [setData, setSetData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-
+  const [showTransferModal, setShowTransferModal] = useState(false);
+  const [selectQuantity, setSelectQuantity] = useState(0);
+  const [productId, setProductId] = useState("");
   const getProducts = async () => {
     const querySnapshot = await getDocs(
       collection(getFirestore(), "inventory")
@@ -43,7 +46,7 @@ const Authors = ({ title, captions, data }) => {
   };
   useEffect(() => {
     getProducts();
-  }, [showModal]);
+  }, [showModal, showTransferModal]);
   const textColor = useColorModeValue("gray.700", "white");
   return (
     <Card overflowX={{ sm: "scroll", xl: "hidden" }}>
@@ -73,47 +76,67 @@ const Authors = ({ title, captions, data }) => {
             </Tr>
           </Thead>
           <Tbody>
-            {setData.map((row) => {
-              return (
-                <Tr>
-                  <Td w={"20%"}>{row.id}</Td>
-                  <Td>
-                    <Flex
-                      align="center"
-                      py=".8rem"
-                      minWidth="100%"
-                      flexWrap="nowrap"
-                    >
-                      <Avatar
-                        src={row.image}
-                        w="50px"
-                        borderRadius="12px"
-                        me="18px"
-                      />
-                      <Flex direction="column">
-                        <Text
-                          fontSize="md"
-                          color={textColor}
-                          fontWeight="bold"
-                          minWidth="100%"
-                        >
-                          {row.name}
-                        </Text>
+            {setData
+              .filter((o) => o.user_id == localStorage.getItem("token"))
+              .map((row) => {
+                return (
+                  <Tr>
+                    <Td w={"20%"}>{row.id}</Td>
+                    <Td>
+                      <Flex
+                        align="center"
+                        py=".8rem"
+                        minWidth="100%"
+                        flexWrap="nowrap"
+                      >
+                        <Avatar
+                          src={row.image}
+                          w="50px"
+                          borderRadius="12px"
+                          me="18px"
+                        />
+                        <Flex direction="column">
+                          <Text
+                            fontSize="md"
+                            color={textColor}
+                            fontWeight="bold"
+                            minWidth="100%"
+                          >
+                            {row.name}
+                          </Text>
+                        </Flex>
                       </Flex>
-                    </Flex>
-                  </Td>
-                  <Td>{row.count}</Td>
-                  <Td>
-                    <Button>Transfer</Button>
-                  </Td>
-                </Tr>
-              );
-            })}
+                    </Td>
+                    <Td>{row.count}</Td>
+                    <Td>
+                      <Button
+                        onClick={() => {
+                          setShowTransferModal(true);
+                          setSelectQuantity(row.count);
+                          setProductId(row.id);
+                        }}
+                      >
+                        Transfer
+                      </Button>
+                    </Td>
+                  </Tr>
+                );
+              })}
           </Tbody>
         </Table>
       </CardBody>
       {showModal ? (
         <CustomModal isOpen={showModal} onClose={() => setShowModal(false)} />
+      ) : (
+        <></>
+      )}
+      {showTransferModal ? (
+        <TransferModal
+          isOpen={showTransferModal}
+          onClose={() => setShowTransferModal(false)}
+          quantity={selectQuantity}
+          productId={productId}
+        />
       ) : (
         <></>
       )}

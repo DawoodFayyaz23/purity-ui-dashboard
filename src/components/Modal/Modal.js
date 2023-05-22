@@ -22,6 +22,7 @@ const CustomModal = ({ isOpen, onClose }) => {
   const [file, setFile] = useState("");
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState(0);
+
   const handleUpload = async () => {
     if (!file) {
       toast.error("Please upload an image");

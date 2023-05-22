@@ -51,7 +51,7 @@ function SignIn() {
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
       localStorage.setItem("token", result._tokenResponse.localId);
-      localStorage.setItem("user", result._tokenResponse);
+      localStorage.setItem("user", JSON.stringify(result._tokenResponse));
       history.push("/admin/dashboard");
     } catch (error) {
       console.log(error);
