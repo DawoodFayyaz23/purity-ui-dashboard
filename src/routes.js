@@ -1,21 +1,10 @@
 // import
 import Dashboard from "views/Dashboard/Dashboard";
-import Tables from "views/Dashboard/Tables";
-import Billing from "views/Dashboard/Billing";
-import RTLPage from "views/Dashboard/RTL";
-import Profile from "views/Dashboard/Profile";
 import SignIn from "views/Auth/SignIn.js";
 import SignUp from "views/Auth/SignUp.js";
 
-import {
-  HomeIcon,
-  StatsIcon,
-  CreditIcon,
-  PersonIcon,
-  DocumentIcon,
-  RocketIcon,
-  SupportIcon,
-} from "components/Icons/Icons";
+import { HomeIcon, DocumentIcon, RocketIcon } from "components/Icons/Icons";
+import Transaction from "views/Dashboard/Dashboard/Transaction";
 
 var dashRoutes = [
   {
@@ -24,6 +13,14 @@ var dashRoutes = [
     rtlName: "لوحة القيادة",
     icon: <HomeIcon color="inherit" />,
     component: Dashboard,
+    layout: "/admin",
+  },
+  {
+    path: "/transactions",
+    name: "Transactions",
+    rtlName: "لوحة القيادة",
+    icon: <DocumentIcon color="inherit" />,
+    component: Transaction,
     layout: "/admin",
   },
   // {
